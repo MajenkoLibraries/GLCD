@@ -74,7 +74,7 @@ class _GLCD : public Print {
 		void command(unsigned char, unsigned char);
 		void data(unsigned char, unsigned char);
 		void send(unsigned char, unsigned char);
-		virtual void write(uint8_t);
+		virtual size_t write(uint8_t);
 		void lcd_delay();
 
 		void set_page(unsigned char, unsigned char);

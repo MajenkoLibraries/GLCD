@@ -314,13 +314,13 @@ void _GLCD::clearPixel(unsigned char x, unsigned char y)
 	this->screen[row][x] &= ~mask;
 }
 
-void _GLCD::write(uint8_t c)
+size_t _GLCD::write(uint8_t c)
 {
 	unsigned int cpos;
 	if(c=='\r')
 	{
 		this->x = 0;
-		return;
+		return 1;
 	}
 
 	if(c=='\n')
@@ -332,7 +332,7 @@ void _GLCD::write(uint8_t c)
 			for(cpos=0; cpos<8; cpos++)
 				this->scrollUp();
 		}       
-		return;
+		return 1;
 	}
 	if(c==0x08)
 	{
@@ -346,20 +346,20 @@ void _GLCD::write(uint8_t c)
 				this->y--;
 			}
 		}
-		return;
+		return 1;
 	}
 	if(c==0x07)
 	{
-		return;
+		return 1;
 	}
 	if(c==0x0C)
 	{
 		this->cls();
 		this->update();
-		return;
+		return 1;
 	}
 	if((c<' ') || (c>'z'))
-		return;
+		return 1;
 	if(this->x > 127-6)
 	{
 		this->x=0;
@@ -378,6 +378,7 @@ void _GLCD::write(uint8_t c)
 	this->screen[this->y][this->x++] = font[cpos++];
 	this->screen[this->y][this->x++] = font[cpos++];
 	this->screen[this->y][this->x++] = 0;
+    return 1;
 }
 
 void _GLCD::scrollUp()
